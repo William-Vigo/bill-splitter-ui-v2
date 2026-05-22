@@ -1,6 +1,6 @@
 "use client";
 import { use, useState } from 'react';
-import { Avatar, Box, Button, IconButton, InputAdornment, List, ListItem, Menu, MenuItem, Stack, TextField, Typography } from '@mui/material';
+import { Avatar, Box, Button, FormControl, IconButton, InputAdornment, List, ListItem, Menu, MenuItem, Stack, TextField, Typography } from '@mui/material';
 import PersonIcon from '@mui/icons-material/PersonOutlineOutlined';
 import GroupsIcon from '@mui/icons-material/PeopleAltOutlined';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
@@ -32,6 +32,12 @@ export default function People() {
                 {/* TODO: Add styling*/} 
                 <Typography variant="h6">People</Typography>
                 <Typography variant="subtitle1">Add the people who are splitting the bill</Typography>
+                <form
+                onSubmit={ (e) => {
+                    e.preventDefault();
+                    handleAddPerson();
+                }}
+                >
                 <Stack direction={"row"} spacing={2}>
                     <TextField slotProps={{
                         input: {
@@ -44,10 +50,12 @@ export default function People() {
                     }}
                     placeholder="Enter name"
                     variant='outlined'
+                    value={name}
                     onChange={(e) => setName(e.target.value)}
                     />
-                    <Button variant="contained" onClick={handleAddPerson}>Add</Button>
+                    <Button type="submit" variant="contained">Add</Button>
                 </Stack>
+                </form>
                 {/* TODO: list items need to be generated based on number of people added */}
                 <List>
                 {party.map((person) => (
