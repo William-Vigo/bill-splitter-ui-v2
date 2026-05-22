@@ -10,6 +10,7 @@ import {
     InputAdornment,
     List,
     ListItem,
+    ListItemIcon,
     Menu,
     MenuItem,
     Stack,
@@ -19,6 +20,7 @@ import {
 import PersonIcon from "@mui/icons-material/PersonOutlineOutlined"
 import GroupsIcon from "@mui/icons-material/PeopleAltOutlined"
 import MoreVertIcon from "@mui/icons-material/MoreVert"
+import TrashCanIcon from "@mui/icons-material/DeleteForeverOutlined"
 
 import Card from "@mui/material/Card"
 import CardContent from "@mui/material/CardContent"
@@ -39,6 +41,7 @@ export default function People() {
     // required for menu component
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
     const open = Boolean(anchorEl) //required for menu component
+
     // determins where to open the menu and what person is selected for the menu
     const handleClick = (
         event: React.MouseEvent<HTMLElement>,
@@ -94,6 +97,7 @@ export default function People() {
                                         ),
                                     },
                                 }}
+                                size="small"
                                 placeholder="Enter name"
                                 variant="outlined"
                                 value={name}
@@ -131,9 +135,14 @@ export default function People() {
                     </Box>
                 </CardContent>
             </Card>
-            {/* Menu is not like floating and attaches using anchorEl */}
+            {/* Menu is floating and attaches using anchorEl */}
             <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
-                <MenuItem onClick={handleRemovePerson}>Remove</MenuItem>
+                <MenuItem onClick={handleRemovePerson}>
+                    <ListItemIcon>
+                        <TrashCanIcon />
+                    </ListItemIcon>
+                    <Typography variant="inherit">Remove</Typography>
+                </MenuItem>
             </Menu>
         </>
     )
