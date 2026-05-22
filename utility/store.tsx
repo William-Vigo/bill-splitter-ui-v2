@@ -14,16 +14,17 @@ type sharedItem = {
 }
 
 type BillState = {
-    party: Record<string, people>;
+    party: string[];
     split: sharedItem[];
     tipPaid: number,
     taxPaid: number,
     addPerson: (name: string) => void;
+    removePerson: (name: string) => void;
     addSplit: (sharedItem: sharedItem) => void;
   };
 
 export const useBillStore = create<BillState>( (set) => ({
-    party: {},
+    party: [],
     split: [],
     tipPaid: 0,
     taxPaid: 0,
@@ -32,17 +33,16 @@ export const useBillStore = create<BillState>( (set) => ({
         if (!trimmed) {
             return state;
         }
-        if (state.party[trimmed]) {
+        if (state.party.includes(trimmed)) {
             return state;
         }
         return {
-            party: {
-                ...state.party,
-                [name]: {
-                    name,
-                    items: []
-                }
-            }
+            party: [...state.party, trimmed]
+        }
+    }),
+    removePerson: (name: string) => set( state => {
+        return {
+            party: state.party.filter( person => person !== name )
         }
     }),
     addSplit: (sharedItem: sharedItem) => set( (state) => ({
