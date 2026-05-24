@@ -13,6 +13,7 @@ import {
     ListItemIcon,
     Menu,
     MenuItem,
+    Paper,
     Stack,
     TextField,
     Typography,
@@ -26,10 +27,18 @@ import Card from "@mui/material/Card"
 import CardContent from "@mui/material/CardContent"
 import { useBillStore } from "@/utility/store"
 
+function stringToColor(string: string) {
+    // TODO: make the colors random
+    return ""
+}
+
 function stringAvatar(name: string) {
     const first = name.split(" ")[0]?.[0] ?? ""
     const last = name.split(" ")[1]?.[0] ?? ""
     return {
+        sx: {
+            bgcolor: stringToColor(name),
+        },
         children: `${first}${last}`,
     }
 }
@@ -74,65 +83,94 @@ export default function People() {
     }
     return (
         <>
-            <Card>
+            <Card sx={{ width: "300px" }}>
                 <CardContent>
-                    <Typography variant="h6">People</Typography>
-                    <Typography variant="subtitle1">
-                        Add the people who are splitting the bill
-                    </Typography>
-                    <form
-                        onSubmit={(e) => {
-                            e.preventDefault()
-                            handleAddPerson()
-                        }}
-                    >
-                        <Stack direction={"row"} spacing={2}>
-                            <TextField
-                                slotProps={{
-                                    input: {
-                                        startAdornment: (
-                                            <InputAdornment position="start">
-                                                <PersonIcon />
-                                            </InputAdornment>
-                                        ),
-                                    },
-                                }}
-                                size="small"
-                                placeholder="Enter name"
-                                variant="outlined"
-                                value={name}
-                                onChange={(e) => setName(e.target.value)}
-                            />
-                            <Button type="submit" variant="contained">
-                                Add
-                            </Button>
+                    <Stack sx={{ gap: 1 }}>
+                        <Stack>
+                            <Typography variant="h6">People</Typography>
+                            <Typography variant="caption">
+                                Add the people who are splitting the bill
+                            </Typography>
                         </Stack>
-                    </form>
-                    <List>
-                        {party.map((person) => (
-                            <ListItem key={person}>
-                                <Avatar {...stringAvatar(person)} />
-                                <Typography>{person}</Typography>
-                                <IconButton
-                                    onClick={(e) => handleClick(e, person)}
+                        <Stack>
+                            <form
+                                onSubmit={(e) => {
+                                    e.preventDefault()
+                                    handleAddPerson()
+                                }}
+                            >
+                                <Stack direction={"row"} spacing={2}>
+                                    <TextField
+                                        slotProps={{
+                                            input: {
+                                                startAdornment: (
+                                                    <InputAdornment position="start">
+                                                        <PersonIcon />
+                                                    </InputAdornment>
+                                                ),
+                                            },
+                                        }}
+                                        size="small"
+                                        placeholder="Enter name"
+                                        variant="outlined"
+                                        value={name}
+                                        onChange={(e) =>
+                                            setName(e.target.value)
+                                        }
+                                    />
+                                    <Button type="submit" variant="contained">
+                                        Add
+                                    </Button>
+                                </Stack>
+                            </form>
+                        </Stack>
+                        <Stack>
+                            {party.map((person) => (
+                                <Paper
+                                    key={person}
+                                    variant="outlined"
+                                    sx={{
+                                        display: "flex",
+                                        alignItems: "center",
+                                        justifyContent: "space-between",
+                                        px: 2,
+                                        py: 1.5,
+                                        borderRadius: 2,
+                                    }}
                                 >
-                                    <MoreVertIcon />
-                                </IconButton>
-                            </ListItem>
-                        ))}
-                    </List>
-                    <Box
-                        sx={{
-                            display: "flex",
-                            alignItems: "center",
-                            gap: 1,
-                        }}
-                    >
-                        <GroupsIcon />
-                        <Typography variant="body2">
-                            {peopleCount} people
-                        </Typography>
-                    </Box>
+                                    <Box
+                                        sx={{
+                                            display: "flex",
+                                            alignItems: "center",
+                                            gap: 2,
+                                        }}
+                                    >
+                                        <Avatar {...stringAvatar(person)} />
+                                        <Typography>{person}</Typography>
+                                    </Box>
+                                    <IconButton
+                                        onClick={(e) => handleClick(e, person)}
+                                    >
+                                        <MoreVertIcon />
+                                    </IconButton>
+                                </Paper>
+                            ))}
+                        </Stack>
+                        <Stack>
+                            <Box
+                                sx={{
+                                    display: "flex",
+                                    alignItems: "center",
+                                    gap: 1,
+                                }}
+                            >
+                                <GroupsIcon />
+                                <Typography variant="body2">
+                                    {peopleCount} people
+                                </Typography>
+                            </Box>
+                        </Stack>
+                    </Stack>
                 </CardContent>
             </Card>
             {/* Menu is floating and attaches using anchorEl */}
