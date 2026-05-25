@@ -158,7 +158,9 @@ export default function People() {
                                         }}
                                     >
                                         <Avatar {...stringAvatar(person)} />
-                                        <Typography>{person}</Typography>
+                                        <Typography variant="body2">
+                                            {person}
+                                        </Typography>
                                     </Box>
                                     <IconButton
                                         onClick={(e) => handleClick(e, person)}

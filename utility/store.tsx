@@ -34,11 +34,12 @@ export const useBillStore = create<BillState>((set) => ({
             if (!trimmed) {
                 return state
             }
-            if (state.party.includes(trimmed)) {
+            const loweredName = trimmed.toLowerCase()
+            if (state.party.includes(loweredName)) {
                 return state
             }
             return {
-                party: [...state.party, trimmed],
+                party: [...state.party, name],
             }
         }),
     removePerson: (name: string) =>
