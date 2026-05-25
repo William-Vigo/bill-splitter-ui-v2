@@ -20,6 +20,8 @@ type BillState = {
     taxPaid: number
     addPerson: (name: string) => void
     removePerson: (name: string) => void
+    addTip: (tip: number) => void
+    addTax: (tax: number) => void
     addSplit: (sharedItem: sharedItem) => void
 }
 
@@ -46,6 +48,18 @@ export const useBillStore = create<BillState>((set) => ({
         set((state) => {
             return {
                 party: state.party.filter((person) => person !== name),
+            }
+        }),
+    addTip: (tip: number) =>
+        set(() => {
+            return {
+                tipPaid: tip,
+            }
+        }),
+    addTax: (tax: number) =>
+        set(() => {
+            return {
+                taxPaid: tax,
             }
         }),
     addSplit: (sharedItem: sharedItem) =>
