@@ -15,14 +15,13 @@ type sharedItem = {
 
 type BillState = {
     party: string[]
-    split: sharedItem[]
     tipPaid: number
     taxPaid: number
+    itemTotal: number
     addPerson: (name: string) => void
     removePerson: (name: string) => void
     addTip: (tip: number) => void
     addTax: (tax: number) => void
-    addSplit: (sharedItem: sharedItem) => void
 }
 
 export const useBillStore = create<BillState>((set) => ({
@@ -30,6 +29,7 @@ export const useBillStore = create<BillState>((set) => ({
     split: [],
     tipPaid: 0,
     taxPaid: 0,
+    itemTotal: 0,
     addPerson: (name: string) =>
         set((state) => {
             const trimmed = name.trim()
@@ -62,8 +62,4 @@ export const useBillStore = create<BillState>((set) => ({
                 taxPaid: tax,
             }
         }),
-    addSplit: (sharedItem: sharedItem) =>
-        set((state) => ({
-            split: [...state.split, sharedItem],
-        })),
 }))

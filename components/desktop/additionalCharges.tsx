@@ -23,15 +23,13 @@ export default function BillSetting() {
     const addTip = useBillStore((state) => state.addTip)
     const addTax = useBillStore((state) => state.addTax)
 
-    const handleAddTip = () => addTip(Number(tip))
-    const handleAddTax = () => addTax(Number(tax))
     const charges = [
         {
             icon: TipIcon,
             name: "Tip",
             setter: (val: string) => {
                 setTip(val)
-                handleAddTip
+                addTip(Number(val))
             },
         },
         {
@@ -39,7 +37,7 @@ export default function BillSetting() {
             name: "Tax",
             setter: (val: string) => {
                 setTax(val)
-                handleAddTax
+                addTax(Number(val))
             },
         },
     ]
