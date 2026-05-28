@@ -43,7 +43,7 @@ export default function BillSetting() {
     ]
 
     return (
-        <Card sx={{ width: "400px" }}>
+        <Card>
             <CardContent>
                 <Stack spacing={2}>
                     <Typography variant="h6">Additional Charges</Typography>

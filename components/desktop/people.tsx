@@ -95,7 +95,7 @@ export default function People() {
     }
     return (
         <>
-            <Card sx={{ width: "300px" }}>
+            <Card>
                 <CardContent>
                     <Stack sx={{ gap: 1 }}>
                         <Stack>
