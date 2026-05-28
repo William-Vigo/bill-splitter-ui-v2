@@ -1,27 +1,29 @@
+import { UUID } from "crypto"
 import { create } from "zustand"
 
-type item = {
-    name: string
+export type Item = {
+    id: string
+    item: string
+    quantity: number
     price: number
-}
-type people = {
-    name: string
-    items: item[]
-}
-type sharedItem = {
-    people: string[]
-    items: item[]
+    assignedTo: string[]
+    isShared: boolean
+    _isDraft: boolean
 }
 
 type BillState = {
     party: string[]
     tipPaid: number
     taxPaid: number
+    items: Item[]
     itemTotal: number
     addPerson: (name: string) => void
     removePerson: (name: string) => void
     addTip: (tip: number) => void
     addTax: (tax: number) => void
+    addItem: (item: Item) => void
+    updateItem: (item: Item) => void
+    deleteItem: (id: string) => void
 }
 
 export const useBillStore = create<BillState>((set) => ({
@@ -29,6 +31,7 @@ export const useBillStore = create<BillState>((set) => ({
     split: [],
     tipPaid: 0,
     taxPaid: 0,
+    items: [],
     itemTotal: 0,
     addPerson: (name: string) =>
         set((state) => {
@@ -62,4 +65,29 @@ export const useBillStore = create<BillState>((set) => ({
                 taxPaid: tax,
             }
         }),
+    addItem: (item: Item) => {
+        set((state) => {
+            return {
+                items: [...state.items, item],
+            }
+        })
+    },
+    updateItem: (updatedItem: Item) => {
+        set((state) => {
+            return {
+                items: state.items.map((item) => {
+                    return item.id === updatedItem.id ? updatedItem : item
+                }),
+            }
+        })
+    },
+    deleteItem: (id: string) => {
+        set((state) => {
+            return {
+                items: state.items.filter((item) => {
+                    return item.id !== id
+                }),
+            }
+        })
+    },
 }))
