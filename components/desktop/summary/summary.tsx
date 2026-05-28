@@ -16,7 +16,11 @@ import ItemsTotalIcon from "@mui/icons-material/ShoppingCartOutlined"
 export default function Summary() {
     const tax = useBillStore((state) => state.taxPaid)
     const tip = useBillStore((state) => state.tipPaid)
-    const itemTotal = useBillStore((state) => state.itemTotal)
+    const items = useBillStore((state) => state.items)
+    let itemTotal: number = 0
+    items.forEach((item) => {
+        itemTotal += item.quantity * item.price
+    })
     const total = (tax + tip + itemTotal).toFixed(2)
     const blocks: props[] = [
         {

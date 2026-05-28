@@ -26,10 +26,26 @@ export default function Assignment(
             renderInput={(params) => (
                 <TextField
                     {...params}
-                    variant="standard"
                     placeholder="People"
+                    slotProps={{
+                        ...params.slotProps,
+
+                        input: {
+                            ...params.slotProps.input,
+                            autoFocus: true,
+                        },
+                    }}
                 />
             )}
+            sx={{
+                fontSize: "inherit",
+                "& .MuiFormControl-root": {
+                    height: "100%",
+                },
+                "& .MuiOutlinedInput-notchedOutline": {
+                    display: "none",
+                },
+            }}
         />
     )
 }
