@@ -59,60 +59,81 @@ export default function BillItemsTable() {
     const deleteItem = useBillStore((state) => state.deleteItem)
     const rows = useBillStore((state) => state.items)
     return (
-        <>
-            <Card>
-                <CardContent>
-                    <Stack spacing={2}>
+        <Card
+            sx={{
+                height: "100%",
+                display: "flex",
+                flexDirection: "column",
+            }}
+        >
+            <CardContent
+                sx={{
+                    flex: 1,
+                    display: "flex",
+                    flexDirection: "column",
+                }}
+            >
+                <Stack
+                    spacing={2}
+                    sx={{
+                        flex: 1,
+                    }}
+                >
+                    <Box
+                        sx={{
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "space-between",
+                        }}
+                    >
+                        <Box sx={{ gap: 2 }}>
+                            <Typography variant="h6">Bill Items</Typography>
+                            <Typography variant="caption">
+                                Add all items in the bill along with their
+                                prices.
+                            </Typography>
+                        </Box>
                         <Box
                             sx={{
                                 display: "flex",
-                                alignItems: "center",
-                                justifyContent: "space-between",
+                                gap: 2,
                             }}
                         >
-                            <Box sx={{ gap: 2 }}>
-                                <Typography variant="h6">Bill Items</Typography>
-                                <Typography variant="caption">
-                                    Add all items in the bill along with their
-                                    prices.
-                                </Typography>
-                            </Box>
-                            <Box
-                                sx={{
-                                    display: "flex",
-                                    gap: 2,
+                            <Button
+                                size="medium"
+                                variant="outlined"
+                                onClick={() => {
+                                    rows.map((item) => {
+                                        deleteItem(item.id)
+                                    })
                                 }}
                             >
-                                <Button
-                                    size="medium"
-                                    variant="outlined"
-                                    onClick={() => {
-                                        rows.map((item) => {
-                                            deleteItem(item.id)
-                                        })
-                                    }}
-                                >
-                                    Clear All
-                                </Button>
-                                <Button
-                                    size="medium"
-                                    variant="contained"
-                                    onClick={() => {
-                                        addItem({
-                                            id: crypto.randomUUID(),
-                                            item: "",
-                                            quantity: 0,
-                                            price: 0,
-                                            assignedTo: [],
-                                            isShared: false,
-                                            _isDraft: true,
-                                        })
-                                    }}
-                                >
-                                    Add item
-                                </Button>
-                            </Box>
+                                Clear All
+                            </Button>
+                            <Button
+                                size="medium"
+                                variant="contained"
+                                onClick={() => {
+                                    addItem({
+                                        id: crypto.randomUUID(),
+                                        item: "",
+                                        quantity: 0,
+                                        price: 0,
+                                        assignedTo: [],
+                                        isShared: false,
+                                        _isDraft: true,
+                                    })
+                                }}
+                            >
+                                Add item
+                            </Button>
                         </Box>
+                    </Box>
+                    <Box
+                        sx={{
+                            flex: 1,
+                        }}
+                    >
                         <DataGrid
                             rows={rows}
                             columns={columns}
@@ -123,9 +144,9 @@ export default function BillItemsTable() {
                                 return updated
                             }}
                         />
-                    </Stack>
-                </CardContent>
-            </Card>
-        </>
+                    </Box>
+                </Stack>
+            </CardContent>
+        </Card>
     )
 }
