@@ -62,6 +62,7 @@ export default function BillItemsTable() {
         <Card
             sx={{
                 height: "100%",
+                minHeight: 0,
                 display: "flex",
                 flexDirection: "column",
             }}
@@ -69,6 +70,7 @@ export default function BillItemsTable() {
             <CardContent
                 sx={{
                     flex: 1,
+                    minHeight: 0,
                     display: "flex",
                     flexDirection: "column",
                 }}
@@ -77,6 +79,7 @@ export default function BillItemsTable() {
                     spacing={2}
                     sx={{
                         flex: 1,
+                        minHeight: 0,
                     }}
                 >
                     <Box
@@ -132,6 +135,7 @@ export default function BillItemsTable() {
                     <Box
                         sx={{
                             flex: 1,
+                            minHeight: 0,
                         }}
                     >
                         <DataGrid
