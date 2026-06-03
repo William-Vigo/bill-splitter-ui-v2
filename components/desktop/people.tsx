@@ -95,16 +95,23 @@ export default function People() {
     }
     return (
         <>
-            <Card>
-                <CardContent>
-                    <Stack sx={{ gap: 1 }}>
+            <Card sx={{ height: "100%", minHeight: 0 }}>
+                <CardContent
+                    sx={{
+                        height: "100%",
+                        minHeight: 0,
+                        display: "flex",
+                        flexDirection: "column",
+                    }}
+                >
+                    <Stack sx={{ gap: 1, flex: 1, minHeight: 0 }}>
                         <Stack>
                             <Typography variant="h6">People</Typography>
                             <Typography variant="caption">
                                 Add the people who are splitting the bill
                             </Typography>
                         </Stack>
-                        <Stack>
+                        <Stack sx={{ minHeight: 0 }}>
                             <form
                                 onSubmit={(e) => {
                                     e.preventDefault()
@@ -136,7 +143,14 @@ export default function People() {
                                 </Stack>
                             </form>
                         </Stack>
-                        <Stack>
+                        <Stack
+                            sx={{
+                            flex: 1,
+                            minHeight: 0,
+                            overflowY: "auto",
+                            gap: 1,
+                            }}
+                        >
                             {party.map((person) => (
                                 <Paper
                                     key={person}
