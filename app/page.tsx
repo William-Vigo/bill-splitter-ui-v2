@@ -9,21 +9,57 @@ import Summary from "@/components/desktop/summary/summary"
 export default function Page() {
     return (
         <ThemeProvider theme={theme}>
-            <Box>
-                <Grid container spacing={2}>
-                    <Grid size={4}>
-                        <Stack sx={{ gap: 2 }}>
-                            <People />
-                            <BillSetting />
-                        </Stack>
-                    </Grid>
-                    <Grid size={8}>
+            <Box
+                sx={{
+                    height: "100vh",
+                    overflow: "hidden",
+                }}
+            >
+                <Box
+                    sx={{
+                        maxHeight: "100%",
+                        minHeight: 0,
+                        display: "grid",
+                        gridTemplateAreas: `
+                          "people table"
+                          "charges table"
+                          "summary summary"
+                        `,
+                        gridTemplateColumns: "1fr 2fr",
+                        gridTemplateRows: "1fr auto auto",
+                        gap: 2,
+                    }}
+                >
+                    <Box
+                        sx={{
+                            gridArea: "people",
+                            overflow: "auto",
+                        }}
+                    >
+                        <People />
+                    </Box>
+                    <Box
+                        sx={{
+                            gridArea: "charges",
+                        }}
+                    >
+                        <BillSetting />
+                    </Box>
+                    <Box
+                        sx={{
+                            gridArea: "table",
+                        }}
+                    >
                         <BillItemsTable />
-                    </Grid>
-                    <Grid size={12}>
+                    </Box>
+                    <Box
+                        sx={{
+                            gridArea: "summary",
+                        }}
+                    >
                         <Summary />
-                    </Grid>
-                </Grid>
+                    </Box>
+                </Box>
             </Box>
         </ThemeProvider>
     )
