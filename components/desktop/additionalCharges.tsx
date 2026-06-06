@@ -17,7 +17,7 @@ import { useBillStore } from "@/utility/store"
 import { useState } from "react"
 
 //TODO: validate only number values are inputed into tip and tax fields
-export default function BillSetting() {
+export default function AdditionalCharges() {
     const [tip, setTip] = useState<string>("")
     const [tax, setTax] = useState<string>("")
     const addTip = useBillStore((state) => state.addTip)
@@ -43,7 +43,11 @@ export default function BillSetting() {
     ]
 
     return (
-        <Card>
+        <Card
+            sx={{
+                gridArea: "charges",
+            }}
+        >
             <CardContent>
                 <Stack spacing={2}>
                     <Typography variant="h6">Additional Charges</Typography>

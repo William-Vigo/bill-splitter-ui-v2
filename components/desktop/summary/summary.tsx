@@ -46,7 +46,11 @@ export default function Summary() {
         },
     ]
     return (
-        <Card>
+        <Card
+            sx={{
+                gridArea: "summary",
+            }}
+        >
             <CardContent
                 sx={{
                     display: "flex",

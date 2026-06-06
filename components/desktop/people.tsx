@@ -95,7 +95,12 @@ export default function People() {
     }
     return (
         <>
-            <Card>
+            <Card
+                sx={{
+                    gridArea: "people",
+                    overflow: "auto",
+                }}
+            >
                 <CardContent>
                     <Stack sx={{ gap: 1 }}>
                         <Stack>
