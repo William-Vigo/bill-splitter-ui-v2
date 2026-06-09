@@ -1,4 +1,4 @@
-import { useBillStore } from "@/utility/store"
+import { BillState, useBillStore } from "@/utility/store"
 import {
     Box,
     Button,
@@ -14,8 +14,94 @@ import GrandTotalIcon from "@mui/icons-material/CreditCardOutlined"
 import ItemsTotalIcon from "@mui/icons-material/ShoppingCartOutlined"
 import { formatMoney } from "@/utility/helpers"
 import { useStepper } from "@/components/stepper"
+type item = {
+    itemName: string
+    price: number
+}
+type people = {
+    name: string
+    items: item[]
+}
+type name = {
+    name: string
+}
+type sharedItem = {
+    people: name[]
+    items: item[]
+}
+type Payload = {
+    people: people[]
+    sharedItems: sharedItem[]
+    tipPaid: number
+    taxPaid: number
+}
+
+function getPayloadFromBillStore(billStore: BillState): Payload {
+    const grouped = billStore.items.reduce<Record<string, item[]>>(
+        (acc, value) => {
+            // skip shared items
+            if (value.isShared) {
+                return acc
+            }
+            value.assignedTo.forEach((person) => {
+                if (!acc[person]) {
+                    acc[person] = []
+                }
+                acc[person].push({
+                    itemName: value.item,
+                    price: value.price,
+                })
+            })
+            return acc
+        },
+        {}
+    )
+    const people: people[] = Object.entries(grouped).map(([name, value]) => {
+        return {
+            name: name,
+            items: value,
+        }
+    })
+    const shared = billStore.items
+        .filter((item) => {
+            return item.isShared
+        })
+        .map<sharedItem>((item) => {
+            const assigned = item.assignedTo.map<name>((name) => {
+                return {
+                    name: name,
+                }
+            })
+            return {
+                people: assigned,
+                items: [
+                    {
+                        itemName: item.item,
+                        price: item.price,
+                    },
+                ],
+            }
+        })
+    return {
+        people: people,
+        sharedItems: shared,
+        taxPaid: billStore.taxPaid,
+        tipPaid: billStore.tipPaid,
+    }
+}
+
+async function GetSplit(billStore: BillState) {
+    const payload = getPayloadFromBillStore(billStore)
+    console.log("payload: ", JSON.stringify(payload))
+    const response = await fetch("/split-bill", {
+        method: "POST",
+        body: JSON.stringify(payload),
+    })
+    console.log(await response.json())
+}
 
 export default function Summary() {
+    const store = useBillStore()
     const tax = useBillStore((state) => state.taxPaid)
     const tip = useBillStore((state) => state.tipPaid)
     const items = useBillStore((state) => state.items)
@@ -48,8 +134,8 @@ export default function Summary() {
         },
     ]
     const updateStep = useStepper((state) => state.incrementStep)
-    const handleClick = () => {
-        // TODO: call server and store it in receipt state
+    const handleSplit = () => {
+        GetSplit(store)
         updateStep()
     }
     return (
@@ -84,7 +170,13 @@ export default function Summary() {
                     title="Grand Total"
                     value={"$" + formatMoney(total)}
                 />
-                <Button onClick={handleClick} variant="contained">
+                {/* TODO: implement post logic to server to calculate split */}
+                <Button
+                    variant="contained"
+                    onClick={() => {
+                        handleSplit()
+                    }}
+                >
                     Calculate Split
                 </Button>
             </CardContent>

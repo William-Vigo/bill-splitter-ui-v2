@@ -11,12 +11,11 @@ export type Item = {
     _isDraft: boolean
 }
 
-type BillState = {
+export type BillState = {
     party: string[]
     tipPaid: bigint
     taxPaid: bigint
     items: Item[]
-    itemTotal: bigint
     addPerson: (name: string) => void
     removePerson: (name: string) => void
     addTip: (tip: bigint) => void
@@ -32,7 +31,6 @@ export const useBillStore = create<BillState>((set) => ({
     tipPaid: BigInt(0),
     taxPaid: BigInt(0),
     items: [],
-    itemTotal: BigInt(0),
     addPerson: (name: string) =>
         set((state) => {
             const trimmed = name.trim()
