@@ -4,8 +4,8 @@ import { create } from "zustand"
 export type Item = {
     id: string
     item: string
-    quantity: number
-    price: number
+    quantity: bigint
+    price: bigint
     assignedTo: string[]
     isShared: boolean
     _isDraft: boolean
@@ -13,14 +13,14 @@ export type Item = {
 
 type BillState = {
     party: string[]
-    tipPaid: number
-    taxPaid: number
+    tipPaid: bigint
+    taxPaid: bigint
     items: Item[]
-    itemTotal: number
+    itemTotal: bigint
     addPerson: (name: string) => void
     removePerson: (name: string) => void
-    addTip: (tip: number) => void
-    addTax: (tax: number) => void
+    addTip: (tip: bigint) => void
+    addTax: (tax: bigint) => void
     addItem: (item: Item) => void
     updateItem: (item: Item) => void
     deleteItem: (id: string) => void
@@ -29,10 +29,10 @@ type BillState = {
 export const useBillStore = create<BillState>((set) => ({
     party: [],
     split: [],
-    tipPaid: 0,
-    taxPaid: 0,
+    tipPaid: BigInt(0),
+    taxPaid: BigInt(0),
     items: [],
-    itemTotal: 0,
+    itemTotal: BigInt(0),
     addPerson: (name: string) =>
         set((state) => {
             const trimmed = name.trim()
@@ -53,13 +53,13 @@ export const useBillStore = create<BillState>((set) => ({
                 party: state.party.filter((person) => person !== name),
             }
         }),
-    addTip: (tip: number) =>
+    addTip: (tip: bigint) =>
         set(() => {
             return {
                 tipPaid: tip,
             }
         }),
-    addTax: (tax: number) =>
+    addTax: (tax: bigint) =>
         set(() => {
             return {
                 taxPaid: tax,

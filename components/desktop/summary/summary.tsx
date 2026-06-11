@@ -12,37 +12,38 @@ import TaxIcon from "@mui/icons-material/ReceiptOutlined"
 import TipIcon from "@mui/icons-material/MonetizationOnOutlined"
 import GrandTotalIcon from "@mui/icons-material/CreditCardOutlined"
 import ItemsTotalIcon from "@mui/icons-material/ShoppingCartOutlined"
+import { formatMoney } from "@/utility/helpers"
 
 export default function Summary() {
     const tax = useBillStore((state) => state.taxPaid)
     const tip = useBillStore((state) => state.tipPaid)
     const items = useBillStore((state) => state.items)
-    let itemTotal: number = 0
+    let itemTotal: bigint = BigInt(0)
     items.forEach((item) => {
         itemTotal += item.quantity * item.price
     })
-    const total = (tax + tip + itemTotal).toFixed(2)
+    const total = tax + tip + itemTotal
     const blocks: props[] = [
         {
             icon: ItemsTotalIcon,
             iconColor: "#2563EB",
             backgroundColor: "#E8F1FF",
             title: "Items Total",
-            value: String(itemTotal),
+            value: formatMoney(itemTotal),
         },
         {
             icon: TaxIcon,
             iconColor: "#22C55E",
             backgroundColor: "#EAF7EE",
             title: "Tax",
-            value: String(tax),
+            value: formatMoney(tax),
         },
         {
             icon: TipIcon,
             iconColor: "#8B5CF6",
             backgroundColor: "#F3E8FF",
             title: "Tip",
-            value: String(tip),
+            value: formatMoney(tip),
         },
     ]
     return (
@@ -66,7 +67,7 @@ export default function Summary() {
                         iconColor={block.iconColor}
                         backgroundColor={block.backgroundColor}
                         title={block.title}
-                        value={"$" + block.value}
+                        value={"$" + String(block.value)}
                     />
                 ))}
                 <Divider orientation="vertical" flexItem />
@@ -75,7 +76,7 @@ export default function Summary() {
                     iconColor="#6B7280"
                     backgroundColor="#F3F4F6"
                     title="Grand Total"
-                    value={"$" + String(total)}
+                    value={"$" + formatMoney(total)}
                 />
                 {/* TODO: implement post logic to server to calculate split */}
                 <Button variant="contained">Calculate Split</Button>

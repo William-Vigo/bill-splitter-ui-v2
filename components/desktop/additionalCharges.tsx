@@ -12,14 +12,16 @@ import {
 } from "@mui/material"
 import MoneySign from "@mui/icons-material/AttachMoneyOutlined"
 import TaxIcon from "@mui/icons-material/ReceiptOutlined"
+import { NumericFormat } from "react-number-format"
 import TipIcon from "@mui/icons-material/MonetizationOnOutlined"
 import { useBillStore } from "@/utility/store"
 import { useState } from "react"
+import { formatMoney } from "@/utility/helpers"
 
 //TODO: validate only number values are inputed into tip and tax fields
 export default function AdditionalCharges() {
-    const [tip, setTip] = useState<string>("")
-    const [tax, setTax] = useState<string>("")
+    const [tip, setTip] = useState<bigint>(BigInt(0))
+    const [tax, setTax] = useState<bigint>(BigInt(0))
     const addTip = useBillStore((state) => state.addTip)
     const addTax = useBillStore((state) => state.addTax)
 
@@ -27,17 +29,19 @@ export default function AdditionalCharges() {
         {
             icon: TipIcon,
             name: "Tip",
-            setter: (val: string) => {
+            value: tip,
+            setter: (val: bigint) => {
                 setTip(val)
-                addTip(Number(val))
+                addTip(val)
             },
         },
         {
             icon: TaxIcon,
             name: "Tax",
-            setter: (val: string) => {
+            value: tax,
+            setter: (val: bigint) => {
                 setTax(val)
-                addTax(Number(val))
+                addTax(val)
             },
         },
     ]
@@ -73,7 +77,8 @@ export default function AdditionalCharges() {
                                         {charge.name}
                                     </Typography>
                                 </Box>
-                                <TextField
+                                <NumericFormat
+                                    customInput={TextField}
                                     slotProps={{
                                         input: {
                                             startAdornment: (
@@ -85,10 +90,14 @@ export default function AdditionalCharges() {
                                     }}
                                     size="small"
                                     placeholder="0.00"
+                                    decimalScale={2}
+                                    fixedDecimalScale={true}
                                     variant="outlined"
-                                    onChange={(e) => {
-                                        charge.setter(e.target.value)
+                                    onValueChange={({ value }) => {
+                                        const digits = value.replace(/\D/g, "")
+                                        charge.setter(BigInt(digits || "0"))
                                     }}
+                                    value={formatMoney(charge.value)}
                                 />
                             </Box>
                         ))}
