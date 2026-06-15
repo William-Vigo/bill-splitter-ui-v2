@@ -51,6 +51,7 @@ const columns: GridColDef<Item>[] = [
         field: "assignedTo",
         headerName: "Assigned To",
         renderCell: (props: GridRenderCellParams<Item, string[]>) => {
+            const values = Array.isArray(props.value) ? props.value : []
             return (
                 <Box
                     sx={{
@@ -67,7 +68,7 @@ const columns: GridColDef<Item>[] = [
                         }}
                         direction={"row"}
                     >
-                        {props.value?.map((name) => {
+                        {values?.map((name) => {
                             return (
                                 <Chip
                                     key={name}

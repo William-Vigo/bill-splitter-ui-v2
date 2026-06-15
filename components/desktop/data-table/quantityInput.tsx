@@ -13,6 +13,7 @@ export default function QuantityInput(
             variant="outlined"
             fullWidth
             allowNegative={false}
+            autoFocus
             decimalScale={0}
             value={String(props.value)}
             onValueChange={({ value }) => {

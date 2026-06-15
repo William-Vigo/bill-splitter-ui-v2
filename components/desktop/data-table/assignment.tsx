@@ -16,7 +16,8 @@ export default function Assignment(
             fullWidth
             multiple
             options={party}
-            value={props.value}
+            openOnFocus
+            value={Array.isArray(props.value) ? props.value : []}
             onChange={(_, newValue) => {
                 props.api.setEditCellValue({
                     id: props.id,

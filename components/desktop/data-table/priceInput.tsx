@@ -15,6 +15,7 @@ export default function PriceInput(props: GridRenderCellParams<Item, bigint>) {
             fixedDecimalScale={true}
             variant="outlined"
             fullWidth
+            autoFocus
             allowNegative={false}
             value={formatMoney(BigInt(props.value ?? BigInt(0)))}
             onValueChange={({ value }) => {
