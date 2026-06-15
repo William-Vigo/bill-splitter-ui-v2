@@ -18,16 +18,34 @@ import {
     Typography,
 } from "@mui/material"
 import Assignment from "./assignment"
+import PriceInput from "./priceInput"
+import QuantityInput from "./quantityInput"
+import { formatMoney } from "@/utility/helpers"
 
 const columns: GridColDef<Item>[] = [
     { field: "item", headerName: "Item", editable: true },
     {
         field: "quantity",
         headerName: "Quantity",
-        type: "number",
         editable: true,
+        renderCell: (params: GridRenderCellParams<Item, bigint>) => {
+            return <>x{params.value}</>
+        },
+        renderEditCell: (props: GridRenderCellParams<Item, bigint>) => {
+            return <QuantityInput {...props} />
+        },
     },
-    { field: "price", headerName: "Price", type: "number", editable: true },
+    {
+        field: "price",
+        headerName: "Price",
+        editable: true,
+        renderCell: (params: GridRenderCellParams<Item, bigint>) => {
+            return <>${formatMoney(params.value ?? BigInt(0))}</>
+        },
+        renderEditCell: (props: GridRenderCellParams<Item, bigint>) => {
+            return <PriceInput {...props} />
+        },
+    },
     {
         field: "assignedTo",
         headerName: "Assigned To",
@@ -121,8 +139,8 @@ export default function BillItemsTable() {
                                     addItem({
                                         id: crypto.randomUUID(),
                                         item: "",
-                                        quantity: 0,
-                                        price: 0,
+                                        quantity: BigInt(0),
+                                        price: BigInt(0),
                                         assignedTo: [],
                                         isShared: false,
                                         _isDraft: true,
