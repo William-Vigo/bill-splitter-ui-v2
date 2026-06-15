@@ -7,6 +7,7 @@ export const formatMoney = (cents: bigint) => {
 
 const colorCache = new Map<string, string>()
 
+//TODO: fix color generator so its not identical with other names
 export function stringToColor(name: string) {
     let hash = 0
     if (colorCache.has(name)) {
@@ -19,6 +20,7 @@ export function stringToColor(name: string) {
     const hue = Math.abs(hash) % 360
     const color = `hsl(${hue}, 60%, 35%)`
     colorCache.set(name, color)
+    console.log(colorCache)
     return color
 }
 

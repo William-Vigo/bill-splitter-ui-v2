@@ -48,6 +48,7 @@ const columns: GridColDef<Item>[] = [
         },
     },
     {
+        // TODO: if "person" has been deleted make sure to update other props where that person is referenced
         field: "assignedTo",
         headerName: "Assigned To",
         renderCell: (props: GridRenderCellParams<Item, string[]>) => {
