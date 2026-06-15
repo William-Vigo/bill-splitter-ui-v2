@@ -14,13 +14,14 @@ import {
     Card,
     CardContent,
     Checkbox,
+    Chip,
     Stack,
     Typography,
 } from "@mui/material"
 import Assignment from "./assignment"
 import PriceInput from "./priceInput"
 import QuantityInput from "./quantityInput"
-import { formatMoney } from "@/utility/helpers"
+import { formatMoney, stringToColor } from "@/utility/helpers"
 
 const columns: GridColDef<Item>[] = [
     { field: "item", headerName: "Item", editable: true },
@@ -49,6 +50,39 @@ const columns: GridColDef<Item>[] = [
     {
         field: "assignedTo",
         headerName: "Assigned To",
+        renderCell: (props: GridRenderCellParams<Item, string[]>) => {
+            return (
+                <Box
+                    sx={{
+                        overflow: "auto",
+                        display: "flex",
+                        height: "100%",
+                    }}
+                >
+                    <Stack
+                        sx={{
+                            gap: 1,
+                            display: "flex",
+                            alignItems: "center",
+                        }}
+                        direction={"row"}
+                    >
+                        {props.value?.map((name) => {
+                            return (
+                                <Chip
+                                    key={name}
+                                    label={name}
+                                    sx={{
+                                        background: stringToColor(name),
+                                        color: "white",
+                                    }}
+                                />
+                            )
+                        })}
+                    </Stack>
+                </Box>
+            )
+        },
         renderEditCell: (props: GridRenderCellParams<Item, string[]>) => {
             return <Assignment {...props} />
         },

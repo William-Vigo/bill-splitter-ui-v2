@@ -26,34 +26,7 @@ import TrashCanIcon from "@mui/icons-material/DeleteForeverOutlined"
 import Card from "@mui/material/Card"
 import CardContent from "@mui/material/CardContent"
 import { useBillStore } from "@/utility/store"
-
-const colorCache = new Map<string, string>()
-
-function stringToColor(name: string) {
-    let hash = 0
-    if (colorCache.has(name)) {
-        return colorCache.get(name)
-    }
-    for (let i = 0; i < name.length; i++) {
-        hash = name.charCodeAt(i) + ((hash << 5) - hash)
-    }
-
-    const hue = Math.abs(hash) % 360
-    const color = `hsl(${hue}, 60%, 35%)`
-    colorCache.set(name, color)
-    return color
-}
-
-function stringAvatar(name: string) {
-    const first = name.split(" ")[0]?.[0].toUpperCase() ?? ""
-    const last = name.split(" ")[1]?.[0].toUpperCase() ?? ""
-    return {
-        sx: {
-            bgcolor: stringToColor(name),
-        },
-        children: `${first}${last}`,
-    }
-}
+import { stringAvatar } from "@/utility/helpers"
 
 export default function People() {
     const [selectedPerson, setSelectedPerson] = useState<string | null>(null)

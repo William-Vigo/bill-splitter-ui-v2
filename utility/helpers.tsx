@@ -4,3 +4,31 @@ export const formatMoney = (cents: bigint) => {
 
     return `${dollars}.${centsPart}`
 }
+
+const colorCache = new Map<string, string>()
+
+export function stringToColor(name: string) {
+    let hash = 0
+    if (colorCache.has(name)) {
+        return colorCache.get(name)
+    }
+    for (let i = 0; i < name.length; i++) {
+        hash = name.charCodeAt(i) + ((hash << 5) - hash)
+    }
+
+    const hue = Math.abs(hash) % 360
+    const color = `hsl(${hue}, 60%, 35%)`
+    colorCache.set(name, color)
+    return color
+}
+
+export function stringAvatar(name: string) {
+    const first = name.split(" ")[0]?.[0].toUpperCase() ?? ""
+    const last = name.split(" ")[1]?.[0].toUpperCase() ?? ""
+    return {
+        sx: {
+            bgcolor: stringToColor(name),
+        },
+        children: `${first}${last}`,
+    }
+}

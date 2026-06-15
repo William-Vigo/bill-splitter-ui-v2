@@ -1,5 +1,6 @@
+import { stringToColor } from "@/utility/helpers"
 import { Item, useBillStore } from "@/utility/store"
-import { Autocomplete, TextField } from "@mui/material"
+import { Autocomplete, Chip, TextField } from "@mui/material"
 import {
     GridActionsCell,
     GridActionsCellItem,
@@ -23,13 +24,28 @@ export default function Assignment(
                     value: newValue,
                 })
             }}
+            renderValue={(value: readonly string[], getItemProps) =>
+                value.map((option: string, index: number) => {
+                    const { key, ...itemProps } = getItemProps({ index })
+                    return (
+                        <Chip
+                            label={option}
+                            key={key}
+                            sx={{
+                                color: "white",
+                                background: stringToColor(option),
+                            }}
+                            {...itemProps}
+                        />
+                    )
+                })
+            }
             renderInput={(params) => (
                 <TextField
                     {...params}
                     placeholder="People"
                     slotProps={{
                         ...params.slotProps,
-
                         input: {
                             ...params.slotProps.input,
                             autoFocus: true,
@@ -38,6 +54,7 @@ export default function Assignment(
                 />
             )}
             sx={{
+                overflow: "auto",
                 fontSize: "inherit",
                 "& .MuiFormControl-root": {
                     height: "100%",
