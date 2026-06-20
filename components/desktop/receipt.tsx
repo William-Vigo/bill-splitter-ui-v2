@@ -9,6 +9,7 @@ import {
     Stack,
     Typography,
 } from "@mui/material"
+import { Padauk } from "next/font/google"
 import { create } from "zustand"
 
 export type Item = {
@@ -68,6 +69,12 @@ export default function ReceiptCard(receipt: Receipt) {
         {
             Name: "Total",
             Price: BigInt(receipt.total),
+            styles: {
+                backgroundColor: "#f2f6fd",
+                color: "#1567ed",
+                padding: "5px",
+                borderRadius: "5px",
+            },
         },
     ]
     return (
@@ -152,6 +159,7 @@ export default function ReceiptCard(receipt: Receipt) {
                             sx={{
                                 display: "flex",
                                 justifyContent: "space-between",
+                                ...fee?.styles,
                             }}
                         >
                             <Typography variant="subtitle2">
