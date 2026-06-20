@@ -1,10 +1,7 @@
-import ReceiptCard, { Receipt } from "./receipt"
+import ReceiptCard, { Receipt, useReciptsState } from "./receipt"
 
-type props = {
-    receipts: Receipt[]
-}
-
-export default function ReceiptOverview({ receipts }: props) {
+export default function ReceiptOverview() {
+    const receipts = useReciptsState((state) => state.receipts)
     return (
         <>
             {receipts.map((receipt, index) => (

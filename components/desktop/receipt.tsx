@@ -1,4 +1,5 @@
 import { formatMoney, stringAvatar } from "@/utility/helpers"
+import { Receipt } from "@mui/icons-material"
 import {
     Avatar,
     Box,
@@ -8,6 +9,7 @@ import {
     Stack,
     Typography,
 } from "@mui/material"
+import { create } from "zustand"
 
 export type Item = {
     Name: string
@@ -22,6 +24,22 @@ export type Receipt = {
     Tip: bigint
     Total: bigint
 }
+
+export type ReceiptsState = {
+    receipts: Receipt[]
+    addReceipt: (receipt: Receipt) => void
+}
+
+export const useReciptsState = create<ReceiptsState>((set) => ({
+    receipts: [],
+    addReceipt: (receipt) => {
+        set((state) => {
+            return {
+                receipts: [...state.receipts, receipt],
+            }
+        })
+    },
+}))
 
 export default function ReceiptCard(receipt: Receipt) {
     const fees = [
