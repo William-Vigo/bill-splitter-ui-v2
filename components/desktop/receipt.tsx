@@ -12,17 +12,17 @@ import {
 import { create } from "zustand"
 
 export type Item = {
-    Name: string
-    Price: bigint
+    itemName: string
+    price: bigint
 }
 export type Receipt = {
-    Name: string
-    Items: Item[]
-    SharedItems: Item[]
-    ItemSum: bigint
-    Tax: bigint
-    Tip: bigint
-    Total: bigint
+    name: string
+    items: Item[]
+    sharedItems: Item[]
+    itemSum: bigint
+    tax: bigint
+    tip: bigint
+    total: bigint
 }
 
 export type ReceiptsState = {
@@ -45,19 +45,19 @@ export default function ReceiptCard(receipt: Receipt) {
     const fees = [
         {
             Name: "Item Sum",
-            Price: BigInt(receipt.ItemSum),
+            Price: BigInt(receipt.itemSum),
         },
         {
             Name: "Tax",
-            Price: BigInt(receipt.Tax),
+            Price: BigInt(receipt.tax),
         },
         {
             Name: "Tip",
-            Price: BigInt(receipt.Tip),
+            Price: BigInt(receipt.tip),
         },
         {
             Name: "Total",
-            Price: BigInt(receipt.Total),
+            Price: BigInt(receipt.total),
         },
     ]
     return (
@@ -75,10 +75,10 @@ export default function ReceiptCard(receipt: Receipt) {
                             gap: 2,
                         }}
                     >
-                        <Avatar {...stringAvatar(receipt.Name)} />
+                        <Avatar {...stringAvatar(receipt.name)} />
                         <Box>
                             <Typography variant="subtitle1">
-                                {receipt.Name}
+                                {receipt.name}
                             </Typography>
                             <Typography variant="caption">
                                 Thank you!
@@ -87,7 +87,7 @@ export default function ReceiptCard(receipt: Receipt) {
                     </Box>
                     <Divider />
                     <Typography variant="subtitle1">Items</Typography>
-                    {receipt.Items.map((item, index) => (
+                    {receipt.items.map((item, index) => (
                         <Box
                             key={index}
                             sx={{
@@ -97,20 +97,20 @@ export default function ReceiptCard(receipt: Receipt) {
                         >
                             <Box>
                                 <Typography variant="subtitle2">
-                                    {item.Name}
+                                    {item.itemName}
                                 </Typography>
                                 <Typography variant="caption">
-                                    1 x ${formatMoney(item.Price)}
+                                    1 x ${formatMoney(item.price)}
                                 </Typography>
                             </Box>
                             <Typography variant="subtitle2">
-                                ${formatMoney(item.Price)}
+                                ${formatMoney(item.price)}
                             </Typography>
                         </Box>
                     ))}
                     <Divider />
                     <Typography variant="subtitle1">Shared Items</Typography>
-                    {receipt.SharedItems.map((item, index) => (
+                    {receipt.sharedItems.map((item, index) => (
                         <Box
                             key={index}
                             sx={{
@@ -120,14 +120,14 @@ export default function ReceiptCard(receipt: Receipt) {
                         >
                             <Box>
                                 <Typography variant="subtitle2">
-                                    {item.Name}
+                                    {item.itemName}
                                 </Typography>
                                 <Typography variant="caption">
-                                    1 x ${formatMoney(item.Price)}
+                                    1 x ${formatMoney(item.price)}
                                 </Typography>
                             </Box>
                             <Typography variant="subtitle2">
-                                ${formatMoney(item.Price)}
+                                ${formatMoney(item.price)}
                             </Typography>
                         </Box>
                     ))}

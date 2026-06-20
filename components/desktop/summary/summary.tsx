@@ -14,6 +14,7 @@ import GrandTotalIcon from "@mui/icons-material/CreditCardOutlined"
 import ItemsTotalIcon from "@mui/icons-material/ShoppingCartOutlined"
 import { formatMoney } from "@/utility/helpers"
 import { useStepper } from "@/components/stepper"
+import { Receipt, useReciptsState } from "../receipt"
 type item = {
     itemName: string
     price: number
@@ -36,6 +37,10 @@ type Payload = {
     taxPaid: number
 }
 
+type Response = {
+    people: Receipt[]
+}
+
 function getPayloadFromBillStore(billStore: BillState): Payload {
     const grouped = billStore.items.reduce<Record<string, item[]>>(
         (acc, value) => {
@@ -49,7 +54,7 @@ function getPayloadFromBillStore(billStore: BillState): Payload {
                 }
                 acc[person].push({
                     itemName: value.item,
-                    price: value.price,
+                    price: Number(value.price),
                 })
             })
             return acc
@@ -77,7 +82,7 @@ function getPayloadFromBillStore(billStore: BillState): Payload {
                 items: [
                     {
                         itemName: item.item,
-                        price: item.price,
+                        price: Number(item.price),
                     },
                 ],
             }
@@ -85,19 +90,41 @@ function getPayloadFromBillStore(billStore: BillState): Payload {
     return {
         people: people,
         sharedItems: shared,
-        taxPaid: billStore.taxPaid,
-        tipPaid: billStore.tipPaid,
+        taxPaid: Number(billStore.taxPaid),
+        tipPaid: Number(billStore.tipPaid),
     }
 }
 
-async function GetSplit(billStore: BillState) {
+async function GetSplit(billStore: BillState): Promise<Response> {
     const payload = getPayloadFromBillStore(billStore)
-    console.log("payload: ", JSON.stringify(payload))
     const response = await fetch("/split-bill", {
         method: "POST",
         body: JSON.stringify(payload),
     })
-    console.log(await response.json())
+
+    return (await response.json()) as Response
+}
+
+function sanitizeResponse(response: Response): Response {
+    if (!response) {
+        return { people: [] }
+    }
+    response.people = response.people.map((person) => ({
+        name: person.name,
+        items: (person.items ?? []).map((item) => ({
+            itemName: item.itemName,
+            price: BigInt(item.price),
+        })),
+        sharedItems: (person.sharedItems ?? []).map((item) => ({
+            itemName: item.itemName,
+            price: BigInt(item.price),
+        })),
+        tax: BigInt(person.tax),
+        tip: BigInt(person.tip),
+        total: BigInt(person.total),
+        itemSum: BigInt(person.itemSum),
+    }))
+    return response
 }
 
 export default function Summary() {
@@ -134,8 +161,12 @@ export default function Summary() {
         },
     ]
     const updateStep = useStepper((state) => state.incrementStep)
-    const handleSplit = () => {
-        GetSplit(store)
+    const addReceipt = useReciptsState((state) => state.addReceipt)
+    const handleSplit = async () => {
+        const receipts = sanitizeResponse(await GetSplit(store))
+        receipts.people.forEach((receipt) => {
+            addReceipt(receipt)
+        })
         updateStep()
     }
     return (
