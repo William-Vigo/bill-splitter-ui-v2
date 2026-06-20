@@ -8,30 +8,23 @@ export default function BillConfig() {
     return (
         <Box
             sx={{
-                height: "100vh",
-                overflow: "hidden",
-            }}
-        >
-            <Box
-                sx={{
-                    maxHeight: "100%",
-                    minHeight: 0,
-                    display: "grid",
-                    gridTemplateAreas: `
+                maxHeight: "100%",
+                minHeight: 0,
+                display: "grid",
+                gridTemplateAreas: `
               "people table"
               "charges table"
               "summary summary"
             `,
-                    gridTemplateColumns: "1fr 2fr",
-                    gridTemplateRows: "1fr auto auto",
-                    gap: 2,
-                }}
-            >
-                <People />
-                <AdditionalCharges />
-                <BillItemsTable />
-                <Summary />
-            </Box>
+                gridTemplateColumns: "1fr 2fr",
+                gridTemplateRows: "1fr auto auto",
+                gap: 2,
+            }}
+        >
+            <People />
+            <AdditionalCharges />
+            <BillItemsTable />
+            <Summary />
         </Box>
     )
 }

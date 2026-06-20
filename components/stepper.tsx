@@ -46,7 +46,14 @@ export default function BillSteps() {
     const back = useStepper((state) => state.decrementStep)
     const StepComp = steps[step].comp
     return (
-        <Box>
+        <Box
+            sx={{
+                height: "100vh",
+                display: "flex",
+                flexDirection: "column",
+                gap: 2,
+            }}
+        >
             <StepComp />
             <Stepper activeStep={step}>
                 {steps.map((step) => {
