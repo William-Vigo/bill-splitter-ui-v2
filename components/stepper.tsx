@@ -11,7 +11,7 @@ export type BillStepper = {
 }
 
 export const useStepper = create<BillStepper>((set) => ({
-    step: 1,
+    step: 0,
     incrementStep: () =>
         set((state) => {
             return {

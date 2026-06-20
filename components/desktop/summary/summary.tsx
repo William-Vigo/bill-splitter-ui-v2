@@ -13,6 +13,7 @@ import TipIcon from "@mui/icons-material/MonetizationOnOutlined"
 import GrandTotalIcon from "@mui/icons-material/CreditCardOutlined"
 import ItemsTotalIcon from "@mui/icons-material/ShoppingCartOutlined"
 import { formatMoney } from "@/utility/helpers"
+import { useStepper } from "@/components/stepper"
 
 export default function Summary() {
     const tax = useBillStore((state) => state.taxPaid)
@@ -46,6 +47,11 @@ export default function Summary() {
             value: formatMoney(tip),
         },
     ]
+    const updateStep = useStepper((state) => state.incrementStep)
+    const handleClick = () => {
+        // TODO: call server and store it in receipt state
+        updateStep()
+    }
     return (
         <Card
             sx={{
@@ -78,8 +84,9 @@ export default function Summary() {
                     title="Grand Total"
                     value={"$" + formatMoney(total)}
                 />
-                {/* TODO: implement post logic to server to calculate split */}
-                <Button variant="contained">Calculate Split</Button>
+                <Button onClick={handleClick} variant="contained">
+                    Calculate Split
+                </Button>
             </CardContent>
         </Card>
     )
