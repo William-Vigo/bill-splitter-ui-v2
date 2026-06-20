@@ -20,8 +20,8 @@ import { formatMoney } from "@/utility/helpers"
 
 //TODO: validate only number values are inputed into tip and tax fields
 export default function AdditionalCharges() {
-    const [tip, setTip] = useState<bigint>(BigInt(0))
-    const [tax, setTax] = useState<bigint>(BigInt(0))
+    const tip = useBillStore((state) => state.tipPaid)
+    const tax = useBillStore((state) => state.taxPaid)
     const addTip = useBillStore((state) => state.addTip)
     const addTax = useBillStore((state) => state.addTax)
 
@@ -31,7 +31,6 @@ export default function AdditionalCharges() {
             name: "Tip",
             value: tip,
             setter: (val: bigint) => {
-                setTip(val)
                 addTip(val)
             },
         },
@@ -40,7 +39,6 @@ export default function AdditionalCharges() {
             name: "Tax",
             value: tax,
             setter: (val: bigint) => {
-                setTax(val)
                 addTax(val)
             },
         },
