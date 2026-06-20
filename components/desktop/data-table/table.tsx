@@ -198,7 +198,6 @@ export default function BillItemsTable() {
                             columns={columns}
                             processRowUpdate={(updated, original) => {
                                 updated._isDraft = false
-                                console.log(updated)
                                 updateItem(updated)
                                 return updated
                             }}
