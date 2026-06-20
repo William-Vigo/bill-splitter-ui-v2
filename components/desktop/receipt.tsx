@@ -69,7 +69,11 @@ export default function ReceiptCard(receipt: Receipt) {
         },
     ]
     return (
-        <Card>
+        <Card
+            sx={{
+                width: "400px",
+            }}
+        >
             <CardContent>
                 <Stack
                     sx={{
