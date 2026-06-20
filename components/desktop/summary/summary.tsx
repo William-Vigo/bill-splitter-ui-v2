@@ -18,6 +18,8 @@ import { Receipt, useReciptsState } from "../receipt"
 type item = {
     itemName: string
     price: number
+    quantity: number
+    total: number
 }
 type people = {
     name: string
@@ -55,6 +57,8 @@ function getPayloadFromBillStore(billStore: BillState): Payload {
                 acc[person].push({
                     itemName: value.item,
                     price: Number(value.price),
+                    quantity: Number(value.quantity),
+                    total: Number(0),
                 })
             })
             return acc
@@ -83,6 +87,8 @@ function getPayloadFromBillStore(billStore: BillState): Payload {
                     {
                         itemName: item.item,
                         price: Number(item.price),
+                        quantity: Number(item.quantity),
+                        total: Number(0),
                     },
                 ],
             }
@@ -114,10 +120,14 @@ function sanitizeResponse(response: Response): Response {
         items: (person.items ?? []).map((item) => ({
             itemName: item.itemName,
             price: BigInt(item.price),
+            quantity: BigInt(item.quantity),
+            total: BigInt(item.total),
         })),
         sharedItems: (person.sharedItems ?? []).map((item) => ({
             itemName: item.itemName,
             price: BigInt(item.price),
+            quantity: BigInt(item.quantity),
+            total: BigInt(item.total),
         })),
         tax: BigInt(person.tax),
         tip: BigInt(person.tip),
@@ -201,7 +211,6 @@ export default function Summary() {
                     title="Grand Total"
                     value={"$" + formatMoney(total)}
                 />
-                {/* TODO: implement post logic to server to calculate split */}
                 <Button
                     variant="contained"
                     onClick={() => {

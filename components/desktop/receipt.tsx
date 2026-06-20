@@ -14,6 +14,8 @@ import { create } from "zustand"
 export type Item = {
     itemName: string
     price: bigint
+    quantity: bigint
+    total: bigint
 }
 export type Receipt = {
     name: string
@@ -112,11 +114,11 @@ export default function ReceiptCard(receipt: Receipt) {
                                     {item.itemName}
                                 </Typography>
                                 <Typography variant="caption">
-                                    1 x ${formatMoney(item.price)}
+                                    {item.quantity} x ${formatMoney(item.price)}
                                 </Typography>
                             </Box>
                             <Typography variant="subtitle2">
-                                ${formatMoney(item.price)}
+                                ${formatMoney(item.total)}
                             </Typography>
                         </Box>
                     ))}
@@ -135,11 +137,11 @@ export default function ReceiptCard(receipt: Receipt) {
                                     {item.itemName}
                                 </Typography>
                                 <Typography variant="caption">
-                                    1 x ${formatMoney(item.price)}
+                                    {item.quantity} x ${formatMoney(item.price)}
                                 </Typography>
                             </Box>
                             <Typography variant="subtitle2">
-                                ${formatMoney(item.price)}
+                                ${formatMoney(item.total)}
                             </Typography>
                         </Box>
                     ))}
