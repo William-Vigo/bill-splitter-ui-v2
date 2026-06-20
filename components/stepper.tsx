@@ -3,6 +3,7 @@ import React from "react"
 import { create } from "zustand"
 import BillConfig from "@/components/desktop/billConfig"
 import ReceiptsOverview from "@/components/desktop/receiptOverview"
+import { useReciptsState } from "./desktop/receipt"
 
 export type BillStepper = {
     step: number
@@ -45,6 +46,11 @@ export default function BillSteps() {
     const step = useStepper((state) => state.step)
     const back = useStepper((state) => state.decrementStep)
     const StepComp = steps[step].comp
+    const clear = useReciptsState((state) => state.clearReceipt)
+    const handleBackClick = () => {
+        clear()
+        back()
+    }
     return (
         <Box
             sx={{
@@ -66,7 +72,7 @@ export default function BillSteps() {
             </Stepper>
             {step !== 0 ? (
                 <Box>
-                    <Button onClick={back}>Back</Button>
+                    <Button onClick={handleBackClick}>Back</Button>
                 </Box>
             ) : (
                 <></>

@@ -28,6 +28,7 @@ export type Receipt = {
 export type ReceiptsState = {
     receipts: Receipt[]
     addReceipt: (receipt: Receipt) => void
+    clearReceipt: () => void
 }
 
 export const useReciptsState = create<ReceiptsState>((set) => ({
@@ -36,6 +37,13 @@ export const useReciptsState = create<ReceiptsState>((set) => ({
         set((state) => {
             return {
                 receipts: [...state.receipts, receipt],
+            }
+        })
+    },
+    clearReceipt: () => {
+        set(() => {
+            return {
+                receipts: [],
             }
         })
     },
