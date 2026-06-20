@@ -54,12 +54,24 @@ function getPayloadFromBillStore(billStore: BillState): Payload {
                 if (!acc[person]) {
                     acc[person] = []
                 }
-                acc[person].push({
-                    itemName: value.item,
-                    price: Number(value.price),
-                    quantity: Number(value.quantity),
-                    total: Number(0),
-                })
+                if (value.assignedTo.length === Number(value.quantity)) {
+                    acc[person].push({
+                        itemName: value.item,
+                        price: Number(value.price),
+                        quantity: Number(1),
+                        total: Number(0),
+                    })
+                    return acc
+                }
+                if (value.assignedTo.length === 1) {
+                    acc[person].push({
+                        itemName: value.item,
+                        price: Number(value.price),
+                        quantity: Number(value.quantity),
+                        total: Number(0),
+                    })
+                    return acc
+                }
             })
             return acc
         },
