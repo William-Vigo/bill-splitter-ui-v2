@@ -42,7 +42,7 @@ export const useBillStore = create<BillState>((set) => ({
                 return state
             }
             return {
-                party: [...state.party, name],
+                party: [...state.party, trimmed],
             }
         }),
     removePerson: (name: string) =>
