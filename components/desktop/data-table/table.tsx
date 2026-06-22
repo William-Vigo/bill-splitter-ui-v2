@@ -24,7 +24,13 @@ import QuantityInput from "./quantityInput"
 import { formatMoney, stringToColor } from "@/utility/helpers"
 
 const columns: GridColDef<Item>[] = [
-    { field: "item", headerName: "Item", editable: true },
+    {
+        field: "item",
+        headerName: "Item",
+        editable: true,
+        description: "Name of the item",
+        disableColumnMenu: true,
+    },
     {
         field: "quantity",
         headerName: "Quantity",
@@ -35,6 +41,9 @@ const columns: GridColDef<Item>[] = [
         renderEditCell: (props: GridRenderCellParams<Item, bigint>) => {
             return <QuantityInput {...props} />
         },
+        description: "Quantity of the item",
+        sortable: false,
+        disableColumnMenu: true,
     },
     {
         field: "price",
@@ -46,11 +55,18 @@ const columns: GridColDef<Item>[] = [
         renderEditCell: (props: GridRenderCellParams<Item, bigint>) => {
             return <PriceInput {...props} />
         },
+        description: "Price of the item",
+        sortable: false,
+        disableColumnMenu: true,
     },
     {
         // TODO: if "person" has been deleted make sure to update other props where that person is referenced
         field: "assignedTo",
         headerName: "Assigned To",
+        description:
+            "People who have purchased/split the item, if the item is not marked as 'Shared' the number of assigned people needs to be 1 or equal to the quantity of the item",
+        sortable: false,
+        disableColumnMenu: true,
         renderCell: (props: GridRenderCellParams<Item, string[]>) => {
             const values = Array.isArray(props.value) ? props.value : []
             return (
@@ -96,11 +112,14 @@ const columns: GridColDef<Item>[] = [
         headerName: "Shared",
         type: "boolean",
         editable: true,
+        disableColumnMenu: true,
     },
     {
         field: "action",
         headerName: "Actions",
         type: "actions",
+        sortable: false,
+        disableColumnMenu: true,
         renderCell: (props: GridRenderCellParams<Item, unknown>) => {
             return <Delete {...props} />
         },
