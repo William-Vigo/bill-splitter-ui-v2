@@ -107,8 +107,8 @@ export default function AdditionalCharges() {
                                 theme.typography.body2,
                         }}
                     >
-                        Tax and tip will be added on top of the items and split
-                        among all people.
+                        Tax and tip are divided in proportion to what each
+                        person ordered.
                     </Alert>
                 </Stack>
             </CardContent>
