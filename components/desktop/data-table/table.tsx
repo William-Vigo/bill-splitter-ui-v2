@@ -134,117 +134,114 @@ export default function BillItemsTable() {
     const deleteItem = useBillStore((state) => state.deleteItem)
     const rows = useBillStore((state) => state.items)
     return (
-        <>
-            <Card
+        <Card
+            sx={{
+                height: "100%",
+                minHeight: 0,
+                display: "flex",
+                flexDirection: "column",
+                gridArea: "table",
+            }}
+        >
+            <CardContent
                 sx={{
-                    height: "100%",
+                    flex: 1,
                     minHeight: 0,
                     display: "flex",
                     flexDirection: "column",
-                    gridArea: "table",
                 }}
             >
-                <CardContent
+                <Stack
+                    spacing={2}
                     sx={{
                         flex: 1,
                         minHeight: 0,
-                        display: "flex",
-                        flexDirection: "column",
                     }}
                 >
-                    <Stack
-                        spacing={2}
+                    <Box
+                        sx={{
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "space-between",
+                        }}
+                    >
+                        <Box sx={{ gap: 2 }}>
+                            <Typography variant="h6">Bill Items</Typography>
+                            <Typography variant="caption">
+                                Add all items in the bill along with their
+                                prices.
+                            </Typography>
+                        </Box>
+                        <Box
+                            sx={{
+                                display: "flex",
+                                gap: 2,
+                            }}
+                        >
+                            <Button
+                                size="medium"
+                                variant="outlined"
+                                onClick={() => {
+                                    rows.map((item) => {
+                                        deleteItem(item.id)
+                                    })
+                                }}
+                            >
+                                Clear All
+                            </Button>
+                            <Button
+                                size="medium"
+                                variant="contained"
+                                onClick={() => {
+                                    addItem({
+                                        id: crypto.randomUUID(),
+                                        item: "",
+                                        quantity: BigInt(0),
+                                        price: BigInt(0),
+                                        assignedTo: [],
+                                        isShared: false,
+                                        _isDraft: true,
+                                        _isValid: true,
+                                    })
+                                }}
+                            >
+                                Add item
+                            </Button>
+                        </Box>
+                    </Box>
+                    <Box
                         sx={{
                             flex: 1,
                             minHeight: 0,
                         }}
                     >
-                        <Box
-                            sx={{
-                                display: "flex",
-                                alignItems: "center",
-                                justifyContent: "space-between",
+                        <DataGrid
+                            rows={rows}
+                            columns={columns}
+                            processRowUpdate={(updated, original) => {
+                                updated._isDraft = false
+                                if (isItemValid(updated)) {
+                                    updated._isValid = true
+                                }
+                                updateItem(updated)
+                                return updated
                             }}
-                        >
-                            <Box sx={{ gap: 2 }}>
-                                <Typography variant="h6">Bill Items</Typography>
-                                <Typography variant="caption">
-                                    Add all items in the bill along with their
-                                    prices.
-                                </Typography>
-                            </Box>
-                            <Box
-                                sx={{
-                                    display: "flex",
-                                    gap: 2,
-                                }}
-                            >
-                                <Button
-                                    size="medium"
-                                    variant="outlined"
-                                    onClick={() => {
-                                        rows.map((item) => {
-                                            deleteItem(item.id)
-                                        })
-                                    }}
-                                >
-                                    Clear All
-                                </Button>
-                                <Button
-                                    size="medium"
-                                    variant="contained"
-                                    onClick={() => {
-                                        addItem({
-                                            id: crypto.randomUUID(),
-                                            item: "",
-                                            quantity: BigInt(0),
-                                            price: BigInt(0),
-                                            assignedTo: [],
-                                            isShared: false,
-                                            _isDraft: true,
-                                            _isValid: true,
-                                        })
-                                    }}
-                                >
-                                    Add item
-                                </Button>
-                            </Box>
-                        </Box>
-                        <Box
-                            sx={{
-                                flex: 1,
-                                minHeight: 0,
+                            getRowClassName={(params) => {
+                                console.log("checking val: ", params.row.id)
+                                if (!params.row._isValid) {
+                                    return "invalid-row"
+                                }
+                                return ""
                             }}
-                        >
-                            <DataGrid
-                                rows={rows}
-                                columns={columns}
-                                processRowUpdate={(updated, original) => {
-                                    updated._isDraft = false
-                                    if (isItemValid(updated)) {
-                                        updated._isValid = true
-                                    }
-                                    updateItem(updated)
-                                    return updated
-                                }}
-                                getRowClassName={(params) => {
-                                    console.log("checking val: ", params.row.id)
-                                    if (!params.row._isValid) {
-                                        return "invalid-row"
-                                    }
-                                    return ""
-                                }}
-                                sx={{
-                                    "& .invalid-row": {
-                                        backgroundColor:
-                                            "rgba(211, 47, 47, 0.1)",
-                                    },
-                                }}
-                            />
-                        </Box>
-                    </Stack>
-                </CardContent>
-            </Card>
-        </>
+                            sx={{
+                                "& .invalid-row": {
+                                    backgroundColor: "rgba(211, 47, 47, 0.1)",
+                                },
+                            }}
+                        />
+                    </Box>
+                </Stack>
+            </CardContent>
+        </Card>
     )
 }
