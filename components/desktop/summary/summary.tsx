@@ -1,10 +1,14 @@
 import { BillState, isItemValid, Item, useBillStore } from "@/utility/store"
 import {
+    Alert,
+    AlertTitle,
     Box,
     Button,
     Card,
     CardContent,
     Divider,
+    Snackbar,
+    SnackbarCloseReason,
     Typography,
 } from "@mui/material"
 import { props, Blocks } from "./blocks"
@@ -17,8 +21,22 @@ import { useStepper } from "@/components/stepper"
 import { Receipt, useReciptsState } from "../receipt"
 import { GetSplit } from "@/utility/processSplit"
 import { getPayloadFromBillStore } from "./helper"
+import React from "react"
 
 export default function Summary() {
+    const [open, setOpen] = React.useState<boolean>(false)
+    const handleClick = () => {
+        setOpen(true)
+    }
+    const handleClose = (
+        event?: React.SyntheticEvent | Event,
+        reason?: SnackbarCloseReason
+    ) => {
+        if (reason === "clickaway") {
+            return
+        }
+        setOpen(false)
+    }
     const store = useBillStore()
     const tax = useBillStore((state) => state.taxPaid)
     const tip = useBillStore((state) => state.tipPaid)
@@ -64,6 +82,7 @@ export default function Summary() {
             }
         })
         if (!shouldProcess) {
+            setOpen(true)
             return
         }
         const data = getPayloadFromBillStore(store)
@@ -74,47 +93,74 @@ export default function Summary() {
         updateStep()
     }
     return (
-        <Card
-            sx={{
-                gridArea: "summary",
-            }}
-        >
-            <CardContent
+        <>
+            <Card
                 sx={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "center",
+                    gridArea: "summary",
                 }}
             >
-                <Typography variant="h6">Summary</Typography>
-                {blocks.map((block) => (
-                    <Blocks
-                        key={block.title}
-                        icon={block.icon}
-                        iconColor={block.iconColor}
-                        backgroundColor={block.backgroundColor}
-                        title={block.title}
-                        value={"$" + String(block.value)}
-                    />
-                ))}
-                <Divider orientation="vertical" flexItem />
-                <Blocks
-                    icon={GrandTotalIcon}
-                    iconColor="#6B7280"
-                    backgroundColor="#F3F4F6"
-                    title="Grand Total"
-                    value={"$" + formatMoney(total)}
-                />
-                <Button
-                    variant="contained"
-                    onClick={() => {
-                        handleSplit()
+                <CardContent
+                    sx={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        alignItems: "center",
                     }}
                 >
-                    Calculate Split
-                </Button>
-            </CardContent>
-        </Card>
+                    <Typography variant="h6">Summary</Typography>
+                    {blocks.map((block) => (
+                        <Blocks
+                            key={block.title}
+                            icon={block.icon}
+                            iconColor={block.iconColor}
+                            backgroundColor={block.backgroundColor}
+                            title={block.title}
+                            value={"$" + String(block.value)}
+                        />
+                    ))}
+                    <Divider orientation="vertical" flexItem />
+                    <Blocks
+                        icon={GrandTotalIcon}
+                        iconColor="#6B7280"
+                        backgroundColor="#F3F4F6"
+                        title="Grand Total"
+                        value={"$" + formatMoney(total)}
+                    />
+                    <Button
+                        variant="contained"
+                        onClick={() => {
+                            handleSplit()
+                        }}
+                    >
+                        Calculate Split
+                    </Button>
+                </CardContent>
+            </Card>
+            <Snackbar
+                open={open}
+                anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+                onClose={handleClose}
+            >
+                <Alert
+                    onClose={handleClose}
+                    severity="error"
+                    variant="standard"
+                    sx={{ width: "100%" }}
+                >
+                    <AlertTitle>Invalid Items Setup</AlertTitle>
+                    <ul style={{ margin: 0, paddingLeft: "1.2rem" }}>
+                        <li>
+                            Every item needs a name, a quantity, and at least
+                            one person assigned to it
+                        </li>
+                        <li>
+                            If an item isn&apos;t shared, assign it to exactly
+                            one person, or to as many people as the quantity
+                            (e.g. 3 sodas → 3 people, one each)
+                        </li>
+                    </ul>
+                </Alert>
+            </Snackbar>
+        </>
     )
 }
 
