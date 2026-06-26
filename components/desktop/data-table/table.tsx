@@ -7,7 +7,7 @@ import {
     GridRenderCellParams,
 } from "@mui/x-data-grid"
 import Delete from "./delete"
-import { Item, useBillStore } from "@/utility/store"
+import { isItemValid, Item, useBillStore } from "@/utility/store"
 import {
     Box,
     Button,
@@ -199,6 +199,7 @@ export default function BillItemsTable() {
                                         assignedTo: [],
                                         isShared: false,
                                         _isDraft: true,
+                                        _isValid: true,
                                     })
                                 }}
                             >
@@ -217,8 +218,23 @@ export default function BillItemsTable() {
                             columns={columns}
                             processRowUpdate={(updated, original) => {
                                 updated._isDraft = false
+                                if (isItemValid(updated)) {
+                                    updated._isValid = true
+                                }
                                 updateItem(updated)
                                 return updated
+                            }}
+                            getRowClassName={(params) => {
+                                console.log("checking val: ", params.row.id)
+                                if (!params.row._isValid) {
+                                    return "invalid-row"
+                                }
+                                return ""
+                            }}
+                            sx={{
+                                "& .invalid-row": {
+                                    backgroundColor: "rgba(211, 47, 47, 0.1)",
+                                },
                             }}
                         />
                     </Box>

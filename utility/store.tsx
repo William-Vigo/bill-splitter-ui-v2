@@ -9,6 +9,7 @@ export type Item = {
     assignedTo: string[]
     isShared: boolean
     _isDraft: boolean
+    _isValid: boolean
 }
 
 export type BillState = {
@@ -27,7 +28,6 @@ export type BillState = {
 
 export const useBillStore = create<BillState>((set) => ({
     party: [],
-    split: [],
     tipPaid: BigInt(0),
     taxPaid: BigInt(0),
     items: [],
@@ -89,3 +89,23 @@ export const useBillStore = create<BillState>((set) => ({
         })
     },
 }))
+
+export function isItemValid(item: Item): boolean {
+    // check for empty values
+    console.log("validating: ", item)
+    if (
+        item.item === "" ||
+        item.quantity === BigInt(0) ||
+        item.assignedTo.length === 0
+    ) {
+        return false
+    }
+    if (
+        !item.isShared &&
+        item.quantity !== BigInt(item.assignedTo.length) &&
+        item.assignedTo.length !== 1
+    ) {
+        return false
+    }
+    return true
+}

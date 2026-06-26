@@ -1,4 +1,4 @@
-import { BillState, useBillStore } from "@/utility/store"
+import { BillState, isItemValid, Item, useBillStore } from "@/utility/store"
 import {
     Box,
     Button,
@@ -23,6 +23,7 @@ export default function Summary() {
     const tax = useBillStore((state) => state.taxPaid)
     const tip = useBillStore((state) => state.tipPaid)
     const items = useBillStore((state) => state.items)
+    const updateItem = useBillStore((state) => state.updateItem)
     let itemTotal: bigint = BigInt(0)
     items.forEach((item) => {
         itemTotal += item.quantity * item.price
@@ -54,6 +55,17 @@ export default function Summary() {
     const updateStep = useStepper((state) => state.incrementStep)
     const addReceipt = useReciptsState((state) => state.addReceipt)
     const handleSplit = async () => {
+        let shouldProcess = true
+        items.forEach((item) => {
+            if (!isItemValid(item)) {
+                item._isValid = false
+                updateItem(item)
+                shouldProcess = false
+            }
+        })
+        if (!shouldProcess) {
+            return
+        }
         const data = getPayloadFromBillStore(store)
         const receipts = await GetSplit(data)
         receipts.people.forEach((receipt) => {
