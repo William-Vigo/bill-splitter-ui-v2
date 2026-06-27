@@ -1,0 +1,11 @@
+services:
+  bill-splitter-ui:
+    build:
+      context: .
+    ports:
+      - 3000:3000
+    networks:
+      - proxy
+networks:
+  proxy:
+    external: true

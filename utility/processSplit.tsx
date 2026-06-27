@@ -56,8 +56,7 @@ function sanitizeResponse(response: Resp): Resp {
 }
 
 export async function GetSplit(payload: Payload): Promise<Resp> {
-    //const payload = getPayloadFromBillStore(billStore)
-    const response = await fetch("/split-bill", {
+    const response = await fetch("/api/split-bill", {
         method: "POST",
         body: JSON.stringify(payload),
     })
