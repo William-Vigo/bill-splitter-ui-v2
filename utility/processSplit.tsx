@@ -26,11 +26,12 @@ export type Payload = {
 
 export type Resp = {
     people: Receipt[]
+    billTotal: bigint
 }
 
 function sanitizeResponse(response: Resp): Resp {
     if (!response) {
-        return { people: [] }
+        return { people: [], billTotal: BigInt(0) }
     }
     response.people = response.people.map((person) => ({
         name: person.name,

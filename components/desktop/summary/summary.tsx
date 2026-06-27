@@ -74,6 +74,10 @@ export default function Summary() {
     const addReceipt = useReciptsState((state) => state.addReceipt)
     const handleSplit = async () => {
         let shouldProcess = true
+        if (items.length === 0) {
+            setOpen(true)
+            return
+        }
         items.forEach((item) => {
             if (!isItemValid(item)) {
                 item._isValid = false
@@ -87,6 +91,13 @@ export default function Summary() {
         }
         const data = getPayloadFromBillStore(store)
         const receipts = await GetSplit(data)
+        if (BigInt(receipts.billTotal) !== total) {
+            console.log("UI 'total' does not match server calculated 'total'")
+            console.log("ui total: ", total)
+            console.log("server Total: ", receipts.billTotal)
+            console.log("data: ", receipts)
+            return
+        }
         receipts.people.forEach((receipt) => {
             addReceipt(receipt)
         })
@@ -148,6 +159,7 @@ export default function Summary() {
                 >
                     <AlertTitle>Invalid Items Setup</AlertTitle>
                     <ul style={{ margin: 0, paddingLeft: "1.2rem" }}>
+                        <li>At least 1 item needs to be defined</li>
                         <li>
                             Every item needs a name, a quantity, and at least
                             one person assigned to it
