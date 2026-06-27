@@ -227,7 +227,6 @@ export default function BillItemsTable() {
                                 return updated
                             }}
                             getRowClassName={(params) => {
-                                console.log("checking val: ", params.row.id)
                                 if (!params.row._isValid) {
                                     return "invalid-row"
                                 }

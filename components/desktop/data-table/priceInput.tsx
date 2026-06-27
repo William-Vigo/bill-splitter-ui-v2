@@ -6,7 +6,6 @@ import MoneySign from "@mui/icons-material/AttachMoneyOutlined"
 import { NumericFormat } from "react-number-format"
 
 export default function PriceInput(props: GridRenderCellParams<Item, bigint>) {
-    console.log("PriceInput render", props.value)
     return (
         <NumericFormat
             customInput={TextField}

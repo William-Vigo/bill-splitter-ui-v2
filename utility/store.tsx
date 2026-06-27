@@ -92,7 +92,6 @@ export const useBillStore = create<BillState>((set) => ({
 
 export function isItemValid(item: Item): boolean {
     // check for empty values
-    console.log("validating: ", item)
     if (
         item.item === "" ||
         item.quantity === BigInt(0) ||

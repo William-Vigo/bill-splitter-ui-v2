@@ -20,7 +20,6 @@ export function stringToColor(name: string) {
     const hue = Math.abs(hash) % 360
     const color = `hsl(${hue}, 60%, 35%)`
     colorCache.set(name, color)
-    console.log(colorCache)
     return color
 }
 
