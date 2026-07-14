@@ -1,11 +1,15 @@
 services:
-  bill-splitter-ui:
-    build:
-      context: .
-    ports:
-      - 3030:3030
-    networks:
-      - proxy
+    bill-splitter-ui:
+        build:
+            context: .
+        ports:
+            - 3030:3030
+        networks:
+            - proxy
+            - bill-splitter
 networks:
-  proxy:
-    external: true
+    proxy:
+        external: true
+    bill-splitter:
+        external: true
+
